@@ -10,32 +10,45 @@ import {
 } from "@mui/material";
 import "./assets/css/App.css";
 import LoginComponent from "./components/login";
-import * as React from 'react';
+import UserComponent from "./components/users";
 import avatar from "./assets/imagenes/avatar.jpg";
 import Tooltip from '@mui/material/Tooltip';
 import { Route, Switch, Redirect } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+import { deleteTokenAuth, readTokenAuth } from "./services/login.service";
+import React, { useState } from 'react';
 
 
 function App() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const [isLogin, setIslogin] = useState(readTokenAuth() );
   const settings = ['Logout'];
 
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleCloseUserMenu = () => {
+    console.log('cerrar');
     setAnchorElUser(null);
   };
 
+  const handleDeleteLogin = () => {
+    console.log('eliminar sesion');
+    setAnchorElUser(null);
+    deleteTokenAuth();
+    handleLoginChange();
+  };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log('open');
     setAnchorElUser(event.currentTarget);
   };
 
-  const isLogin = false;
+  const handleLoginChange = ()=>{
+    setIslogin(readTokenAuth());
+ };
 
   const handleUserrender = () =>
-    isLogin ? <LoginComponent /> : <Redirect to="/login" />;
+    isLogin ? <UserComponent loginChange={handleLoginChange}/> : <Redirect to="/login" />;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -44,7 +57,7 @@ function App() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Prueba Proyecto React
           </Typography>
-          {auth && (
+          {isLogin && (
             <div>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -54,7 +67,7 @@ function App() {
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
-                anchorEl={anchorElNav}
+                anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
@@ -68,7 +81,7 @@ function App() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={handleDeleteLogin}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
@@ -85,7 +98,7 @@ function App() {
           <Route path="/users" render={handleUserrender} />
           <Route
             path="/login"
-            render={() => (!isLogin ? <LoginComponent /> : <Redirect to="/users" />)}
+            render={() => (!isLogin ? <LoginComponent loginChange={handleLoginChange}/> : <Redirect to="/users" />)}
           />
         </Switch>
       </BrowserRouter>

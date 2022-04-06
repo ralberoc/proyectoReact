@@ -1,11 +1,10 @@
 import { ThemeProvider } from '@emotion/react';
 import { Button, Container, createTheme, CssBaseline, TextField, Typography, FormControlLabel, Box, Checkbox } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import { getToken } from '../../services/login.service.jsx';
+import { getToken, saveTokenAuth } from '../../services/login.service.jsx';
 
 const theme = createTheme();
 
-const LoginComponent = () => {
+const LoginComponent = ({loginChange}) => {
   const initialState = {
     email: '',
     password: '',
@@ -21,7 +20,10 @@ const LoginComponent = () => {
     });
     if (email && password) {
       getToken(data.get('email'), data.get('password')).then(res => {
-        console.log("Mostramos el token: "+res.token);
+        if (res && res.token) {
+          saveTokenAuth(res.token);
+          loginChange();
+        }
       });
     }
   };

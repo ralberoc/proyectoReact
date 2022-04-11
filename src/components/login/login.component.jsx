@@ -1,23 +1,15 @@
 import { ThemeProvider } from '@emotion/react';
-import { Button, Container, createTheme, CssBaseline, TextField, Typography, FormControlLabel, Box, Checkbox } from '@mui/material';
+import { Button, Container, createTheme, CssBaseline, TextField, Typography, FormControlLabel, Box, Checkbox, Alert, Snackbar } from '@mui/material';
 import { getToken, saveTokenAuth } from '../../services/login.service.jsx';
 
 const theme = createTheme();
 
 const LoginComponent = ({loginChange}) => {
-  const initialState = {
-    email: '',
-    password: '',
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
     if (email && password) {
       getToken(data.get('email'), data.get('password')).then(res => {
         if (res && res.token) {

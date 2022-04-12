@@ -1,3 +1,19 @@
 {
-  "title": "Prueba REACT"
+  "title": "Prueba Proyecto REACT",
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "button": "INICIAR SESIÓN"
+  },
+  "users": {
+    "title": "Usuarios",
+    "email": "Email:"
+  },
+  "errors": {
+    "conection": "Error en la conexión",
+    "email": "Email no valido.",
+    "password": "La contraseña no puede estar vacía.",
+    "userNoValid": "Usuario y contraseña incorrectos"
+  }
 }

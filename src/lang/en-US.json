@@ -1,3 +1,19 @@
 {
-  "title": "Prueba REACT"
+  "title": "REACT Project Test",
+  "login": {
+    "title": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "button": "SIGN IN"
+  },
+  "users": {
+    "title": "Users",
+    "email": "Email:"
+  },
+  "errors": {
+    "connection": "Connection error",
+    "email": "Invalid email.",
+    "password": "Password cannot be empty.",
+    "userNoValid": "Incorrect user and password."
+  }
 }

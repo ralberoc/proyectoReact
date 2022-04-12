@@ -1,13 +1,15 @@
 import { ThemeProvider } from '@emotion/react';
-import { Container, createTheme, CssBaseline, Typography, Box, Card, CardMedia, CardContent, Button, CardActionArea, Grid, CardActions, Stack, Pagination, Backdrop, CircularProgress } from '@mui/material';
+import { Container, createTheme, CssBaseline, Typography, Box, Card, CardMedia, CardContent, Grid, Stack, Pagination, Backdrop, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { fetchUserList } from '../../services/users.service.jsx';
+import Mensajes from '../../lang/es-ES.json';
 
 const theme = createTheme();
 
 const UserComponent = ({loginChange}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => { 
     getUsers(1);
@@ -18,6 +20,8 @@ const UserComponent = ({loginChange}) => {
     fetchUserList(numFila).then(res => {
       setData(res.data);
       setLoading(false);
+    }).catch(err => {
+      setOpen(true);
     });
   };
 
@@ -25,8 +29,23 @@ const UserComponent = ({loginChange}) => {
     getUsers(newPage);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
+      <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+        >
+        <Alert severity="error" sx={{ width: '100%' }}>{Mensajes.errors.conection}</Alert>
+      </Snackbar>
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
@@ -38,7 +57,7 @@ const UserComponent = ({loginChange}) => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Usuarios
+            {Mensajes.users.title}
           </Typography>
           <Container sx={{ py: 12 }} maxWidth="md">
             <Grid container spacing={4}>
@@ -56,7 +75,7 @@ const UserComponent = ({loginChange}) => {
                       {card.first_name + ' ' + card.last_name}
                     </Typography>
                     <Typography color="#FFFFFF">
-                      Email: {card.email}
+                      {Mensajes.users.email}{card.email}
                     </Typography>
                   </CardContent>
                 </Card>

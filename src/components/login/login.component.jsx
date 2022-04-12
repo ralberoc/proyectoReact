@@ -3,6 +3,7 @@ import { Button, Container, createTheme, CssBaseline, TextField, Typography, For
 import { useState } from 'react';
 import { getToken, saveTokenAuth } from '../../services/login.service.jsx';
 import { validarEmail } from '../../utils/utils.jsx';
+import Mensajes from '../../lang/es-ES.json';
 
 const theme = createTheme();
 
@@ -33,7 +34,9 @@ const LoginComponent = ({loginChange}) => {
         } else if (res && res.error) {
           setOpen(true);
         }
-      })
+      }).catch(err => {
+        setOpen(true);
+      });
     }
   };
 
@@ -41,7 +44,7 @@ const LoginComponent = ({loginChange}) => {
     if (e.currentTarget.name == 'email') {
       if (!validarEmail(e.currentTarget.value)) {
         setErrorE(true);
-        setErrorEmail('Email no valido.');
+        setErrorEmail(Mensajes.errors.email);
       } else {
         setErrorE(false);
         setErrorEmail('');
@@ -51,7 +54,7 @@ const LoginComponent = ({loginChange}) => {
     if(e.currentTarget.name === 'password') {
       if (e.currentTarget.value === '') {
         setErrorP(true);
-        setErrorPass('La contraseña no puede estar vacía.');
+        setErrorPass(Mensajes.errors.password);
       } else {
         setErrorP(false);
         setErrorPass('');
@@ -67,7 +70,7 @@ const LoginComponent = ({loginChange}) => {
         autoHideDuration={5000}
         onClose={handleClose}
       >
-        <Alert severity="error" sx={{ width: '100%' }}>Usuario y contraseña incorrectos</Alert>
+        <Alert severity="error" sx={{ width: '100%' }}>{Mensajes.errors.userNoValid}</Alert>
       </Snackbar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -80,7 +83,7 @@ const LoginComponent = ({loginChange}) => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            {Mensajes.login.title}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -89,7 +92,7 @@ const LoginComponent = ({loginChange}) => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={Mensajes.login.email}
               name="email"
               autoComplete="email"
               autoFocus
@@ -102,16 +105,12 @@ const LoginComponent = ({loginChange}) => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={Mensajes.login.password}
               type="password"
               id="password"
               autoComplete="current-password"
               helperText={errorPass}
               onChange={validateFields}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -120,7 +119,7 @@ const LoginComponent = ({loginChange}) => {
               sx={{ mt: 3, mb: 2 }}
               disabled={errorE || errorP}
             >
-              Sign In
+              {Mensajes.login.button}
             </Button>
           </Box>
         </Box>

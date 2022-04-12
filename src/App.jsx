@@ -17,6 +17,7 @@ import { Route, Switch, Redirect } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { deleteTokenAuth, readTokenAuth } from "./services/login.service";
 import React, { useState } from 'react';
+import Mensajes from './lang/es-ES.json';
 
 
 function App() {
@@ -27,19 +28,16 @@ function App() {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleCloseUserMenu = () => {
-    console.log('cerrar');
     setAnchorElUser(null);
   };
 
   const handleDeleteLogin = () => {
-    console.log('eliminar sesion');
     setAnchorElUser(null);
     deleteTokenAuth();
     handleLoginChange();
   };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    console.log('open');
     setAnchorElUser(event.currentTarget);
   };
 
@@ -55,7 +53,7 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Prueba Proyecto React
+            {Mensajes.title}
           </Typography>
           {isLogin && (
             <div>
